@@ -1,0 +1,54 @@
+create table book
+(
+    ISBN      int          not null
+        primary key,
+    Title     varchar(50)  not null,
+    Category  varchar(50)  not null,
+    Stock     int          not null,
+    MinStock  int          null,
+    Price     int          not null,
+    Publisher varchar(50)  not null,
+    BookURL   varchar(500) not null,
+    Author    varchar(50)  not null
+);
+
+create table users
+(
+    uid         int auto_increment
+        primary key,
+    Email       varchar(50)  not null,
+    Password    varchar(255) not null,
+    Address     varchar(255) not null,
+    FirstName   varchar(50)  not null,
+    LastName    varchar(50)  not null,
+    City        varchar(50)  not null,
+    Zip         varchar(10)  not null,
+    State       varchar(50)  not null,
+    PhoneNumber varchar(15)  not null,
+    role        varchar(20)  not null,
+    constraint Email
+        unique (Email)
+);
+
+create table orders
+(
+    orderid    int auto_increment
+        primary key,
+    BookISBN   int                                 not null,
+    OrderState tinyint(1)                          null,
+    Quantity   int                                 not null,
+    UserID     int                                 not null,
+    TotalPrice int                                 not null,
+    OrderDate  timestamp default CURRENT_TIMESTAMP null,
+    constraint orders_ibfk_1
+        foreign key (BookISBN) references book (ISBN),
+    constraint orders_ibfk_2
+        foreign key (UserID) references users (uid)
+);
+
+create index BookISBN
+    on orders (BookISBN);
+
+create index UserID
+    on orders (UserID);
+
